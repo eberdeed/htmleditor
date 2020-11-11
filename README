@@ -1,0 +1,39 @@
+
+    The HTML Editor: A program to allow
+    the creation of well-formed HTML files.
+    It is written for Linux but could be 
+    adapted for Windows.
+
+    This program requires Python >= 3.4
+    available at:  www.python.org
+    PyQt >= 5.2.1, QsciScintilla >= 2.8
+    available at:  www.pypi.org
+    and firefox-esr.
+    available at: https://www.mozilla.org/en-US/firefox/enterprise
+    Debian Linux >= 10.2
+    available at:  www.debian.org
+
+    To install the program:
+    
+    ./setup.py install
+    
+    To run the program:
+
+    htmleditor.py
+    
+    The documentation is at:
+    
+    /usr/share/doc/htmleditor-2.0-doc
+    
+    The GNU Lesser Public License is at:
+    
+    /usr/share/doc/htmleditor-2.0-doc/LPGL
+    
+    This program is issued as is and is not to be
+    considered suitable for any purpose.
+
+    You can reach me for questions at:
+    <eberdeed@eberdeed.net>
+
+    Edward Charles Eberle
+    September 2020, San Diego California USA

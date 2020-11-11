@@ -1,0 +1,35 @@
+        HTML Editor Changelog
+
+    4-14-16  Fixed Find and Replace GUI so it does not auto-repeat.
+             ECE
+             
+    4-15-16  Fixed the find and replace so it can use undo-redo.
+             ECE 
+    
+    4-20-16  Fixed tag and attribute insertion so they can use undo-redo.
+             ECE
+             
+    5-17-16  Enabled regular expressions in the find and replace dialog.
+             ECE
+             
+    5-19-16  Allowed for changing of editor colors and saving and loading
+             of configuration files.
+             ECE
+             
+    8-4-16   Fixed screen position in screen geometry saving at end of program.
+             ECE
+             
+    9-8-16   Added HTML documentation and removed unused old code.
+             ECE
+             
+    9-9-16   Added "Replace ALL" to the find gui and removed more unused code.
+             ECE
+             
+    9-16-20  Added "Recent Docs" to the file menu and fixed find and replace.
+             ECE
+
+    9-24-20  Added multiple document tabs and revised the documentation.
+             ECE
+    
+    11-11-20 Fixed file save problem.
+             ECE

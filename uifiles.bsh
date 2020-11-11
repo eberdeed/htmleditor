@@ -1,0 +1,8 @@
+#!/bin/bash
+# A File to compile the Qt GUI metadata.
+pyuic5 uifiles/htmleditor.ui > pyhtmleditor/ui_htmleditor.py
+pyuic5 uifiles/findreplace.ui > pyhtmleditor/ui_findreplace.py
+pyuic5 uifiles/abouthtmledit.ui > pyhtmleditor/ui_abouthtmledit.py
+pyuic5 uifiles/preferences.ui > pyhtmleditor/ui_preferences.py
+pyuic5 uifiles/stylecolors.ui > pyhtmleditor/ui_stylecolors.py
+pyuic5 uifiles/unsaved.ui > pyhtmleditor/ui_unsaved.py

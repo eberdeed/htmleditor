@@ -1,0 +1,482 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <author>Edward Charles Eberle</author>
+ <class>HTMLEditor</class>
+ <widget class="QMainWindow" name="HTMLEditor">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>800</width>
+    <height>579</height>
+   </rect>
+  </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
+  </property>
+  <property name="sizeIncrement">
+   <size>
+    <width>5</width>
+    <height>5</height>
+   </size>
+  </property>
+  <property name="baseSize">
+   <size>
+    <width>800</width>
+    <height>600</height>
+   </size>
+  </property>
+  <property name="font">
+   <font>
+    <pointsize>14</pointsize>
+   </font>
+  </property>
+  <property name="windowTitle">
+   <string>All Editors</string>
+  </property>
+  <property name="windowIcon">
+   <iconset>
+    <normaloff>../../../../usr/share/htmleditor/resources/htmledit.png</normaloff>../../../../usr/share/htmleditor/resources/htmledit.png</iconset>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <widget class="QListWidget" name="tagList">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>395</y>
+      <width>388</width>
+      <height>115</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QListWidget" name="cssList">
+    <property name="geometry">
+     <rect>
+      <x>400</x>
+      <y>400</y>
+      <width>390</width>
+      <height>115</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QTabWidget" name="tabWidget">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>0</y>
+      <width>791</width>
+      <height>381</height>
+     </rect>
+    </property>
+    <property name="currentIndex">
+     <number>1</number>
+    </property>
+    <widget class="QWidget" name="tab1">
+     <attribute name="title">
+      <string>HTML Editor</string>
+     </attribute>
+    </widget>
+    <widget class="QWidget" name="tab2">
+     <attribute name="title">
+      <string>CSS Edtiro</string>
+     </attribute>
+    </widget>
+   </widget>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>800</width>
+     <height>38</height>
+    </rect>
+   </property>
+   <property name="nativeMenuBar">
+    <bool>false</bool>
+   </property>
+   <widget class="QMenu" name="menuEdit">
+    <property name="title">
+     <string>Edit</string>
+    </property>
+    <addaction name="actionUndo"/>
+    <addaction name="actionRedo"/>
+    <addaction name="actionCut"/>
+    <addaction name="actionCopy"/>
+    <addaction name="actionPaste"/>
+    <addaction name="actionFind_and_Replace"/>
+    <addaction name="actionSelect_All"/>
+   </widget>
+   <widget class="QMenu" name="menuHelp">
+    <property name="title">
+     <string>Help</string>
+    </property>
+    <addaction name="actionHelp"/>
+    <addaction name="actionAbout_HTML_Editor"/>
+    <addaction name="actionW3C_org_School"/>
+    <addaction name="actionPreferences"/>
+    <addaction name="actionSave_Preferences"/>
+    <addaction name="actionLoad_Preferences"/>
+   </widget>
+   <widget class="QMenu" name="menuFile">
+    <property name="title">
+     <string>File</string>
+    </property>
+    <addaction name="actionNew"/>
+    <addaction name="actionNew_CSS"/>
+    <addaction name="actionOpen"/>
+    <addaction name="actionSave"/>
+    <addaction name="actionSave_As"/>
+    <addaction name="actionSave_All"/>
+    <addaction name="actionClose"/>
+    <addaction name="actionClose_All"/>
+    <addaction name="actionPrint"/>
+    <addaction name="actionExit"/>
+   </widget>
+   <widget class="QMenu" name="menuTabs">
+    <property name="title">
+     <string>Tabs</string>
+    </property>
+    <addaction name="actionCloseCurrent"/>
+    <addaction name="actionCloseAll"/>
+    <addaction name="actionWeb_Browser"/>
+   </widget>
+   <addaction name="menuFile"/>
+   <addaction name="menuEdit"/>
+   <addaction name="menuTabs"/>
+   <addaction name="menuHelp"/>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+  <widget class="QToolBar" name="toolBar">
+   <property name="windowTitle">
+    <string>toolBar</string>
+   </property>
+   <attribute name="toolBarArea">
+    <enum>TopToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak">
+    <bool>false</bool>
+   </attribute>
+  </widget>
+  <action name="actionNew">
+   <property name="icon">
+    <iconset>
+     <normaloff>../../../../usr/share/htmleditor/resources/filenew.png</normaloff>../../../../usr/share/htmleditor/resources/filenew.png</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;New HTML</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+N</string>
+   </property>
+   <property name="shortcutContext">
+    <enum>Qt::ApplicationShortcut</enum>
+   </property>
+  </action>
+  <action name="actionOpen">
+   <property name="icon">
+    <iconset>
+     <normaloff>../../../../usr/share/htmleditor/resources/fileopen.png</normaloff>../../../../usr/share/htmleditor/resources/fileopen.png</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;Open</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+O</string>
+   </property>
+  </action>
+  <action name="actionSave">
+   <property name="icon">
+    <iconset>
+     <normaloff>../../../../usr/share/htmleditor/resources/filesave.png</normaloff>../../../../usr/share/htmleditor/resources/filesave.png</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;Save</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+S</string>
+   </property>
+  </action>
+  <action name="actionSave_As">
+   <property name="icon">
+    <iconset>
+     <normaloff>../../../../usr/share/htmleditor/resources/filesaveas.png</normaloff>../../../../usr/share/htmleditor/resources/filesaveas.png</iconset>
+   </property>
+   <property name="text">
+    <string>Save As</string>
+   </property>
+  </action>
+  <action name="actionClose">
+   <property name="icon">
+    <iconset>
+     <normaloff>../../../../usr/share/htmleditor/resources/fileclose.png</normaloff>../../../../usr/share/htmleditor/resources/fileclose.png</iconset>
+   </property>
+   <property name="text">
+    <string>Close</string>
+   </property>
+  </action>
+  <action name="actionClose_All">
+   <property name="icon">
+    <iconset>
+     <normaloff>../../../../usr/share/htmleditor/resources/fileclose.png</normaloff>../../../../usr/share/htmleditor/resources/fileclose.png</iconset>
+   </property>
+   <property name="text">
+    <string>Close All</string>
+   </property>
+  </action>
+  <action name="actionPrint">
+   <property name="icon">
+    <iconset>
+     <normaloff>../../../../usr/share/htmleditor/resources/fileprint.png</normaloff>../../../../usr/share/htmleditor/resources/fileprint.png</iconset>
+   </property>
+   <property name="text">
+    <string>Print</string>
+   </property>
+  </action>
+  <action name="actionUndo">
+   <property name="icon">
+    <iconset>
+     <normaloff>../../../../usr/share/htmleditor/resources/undo.png</normaloff>../../../../usr/share/htmleditor/resources/undo.png</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;Undo</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+U</string>
+   </property>
+  </action>
+  <action name="actionRedo">
+   <property name="icon">
+    <iconset>
+     <normaloff>../../../../usr/share/htmleditor/resources/redo.png</normaloff>../../../../usr/share/htmleditor/resources/redo.png</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;Redo</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+R</string>
+   </property>
+  </action>
+  <action name="actionCut">
+   <property name="icon">
+    <iconset>
+     <normaloff>../../../../usr/share/htmleditor/resources/editcut.png</normaloff>../../../../usr/share/htmleditor/resources/editcut.png</iconset>
+   </property>
+   <property name="text">
+    <string>Cut Ctrl+X</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+X</string>
+   </property>
+  </action>
+  <action name="actionCopy">
+   <property name="icon">
+    <iconset>
+     <normaloff>../../../../usr/share/htmleditor/resources/editcopy.png</normaloff>../../../../usr/share/htmleditor/resources/editcopy.png</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;Copy</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+C</string>
+   </property>
+  </action>
+  <action name="actionPaste">
+   <property name="icon">
+    <iconset>
+     <normaloff>../../../../usr/share/htmleditor/resources/editpaste.png</normaloff>../../../../usr/share/htmleditor/resources/editpaste.png</iconset>
+   </property>
+   <property name="text">
+    <string>Paste Ctrl+V</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+V</string>
+   </property>
+  </action>
+  <action name="actionFind_and_Replace">
+   <property name="icon">
+    <iconset>
+     <normaloff>../../../../usr/share/htmleditor/resources/find.png</normaloff>../../../../usr/share/htmleditor/resources/find.png</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;Find and Replace</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+F</string>
+   </property>
+  </action>
+  <action name="actionSelect_All">
+   <property name="icon">
+    <iconset>
+     <normaloff>../../../../usr/share/htmleditor/resources/selectall.png</normaloff>../../../../usr/share/htmleditor/resources/selectall.png</iconset>
+   </property>
+   <property name="text">
+    <string>Select &amp;All</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+A</string>
+   </property>
+  </action>
+  <action name="actionExit">
+   <property name="icon">
+    <iconset>
+     <normaloff>../../../../usr/share/htmleditor/resources/exit.png</normaloff>../../../../usr/share/htmleditor/resources/exit.png</iconset>
+   </property>
+   <property name="text">
+    <string>Exit</string>
+   </property>
+  </action>
+  <action name="actionHelp">
+   <property name="icon">
+    <iconset>
+     <normaloff>../../../../usr/share/htmleditor/resources/htmledit.png</normaloff>../../../../usr/share/htmleditor/resources/htmledit.png</iconset>
+   </property>
+   <property name="text">
+    <string>Help F1</string>
+   </property>
+   <property name="shortcut">
+    <string>F1</string>
+   </property>
+  </action>
+  <action name="actionAbout_HTML_Editor">
+   <property name="icon">
+    <iconset>
+     <normaloff>../../../../usr/share/htmleditor/resources/htmledit.png</normaloff>../../../../usr/share/htmleditor/resources/htmledit.png</iconset>
+   </property>
+   <property name="text">
+    <string>About HTML Editor</string>
+   </property>
+  </action>
+  <action name="actionTabList">
+   <property name="icon">
+    <iconset>
+     <normaloff>../../../../usr/share/htmleditor/resources/textedit.png</normaloff>../../../../usr/share/htmleditor/resources/textedit.png</iconset>
+   </property>
+   <property name="text">
+    <string>Tab List</string>
+   </property>
+  </action>
+  <action name="actionCloseAll">
+   <property name="icon">
+    <iconset>
+     <normaloff>../../../../usr/share/htmleditor/resources/fileclose.png</normaloff>../../../../usr/share/htmleditor/resources/fileclose.png</iconset>
+   </property>
+   <property name="text">
+    <string>Close All</string>
+   </property>
+  </action>
+  <action name="actionW3C_org_School">
+   <property name="icon">
+    <iconset>
+     <normaloff>../../../../usr/share/htmleditor/resources/w3cicon.png</normaloff>../../../../usr/share/htmleditor/resources/w3cicon.png</iconset>
+   </property>
+   <property name="text">
+    <string>W3C.org School F2</string>
+   </property>
+   <property name="shortcut">
+    <string>F2</string>
+   </property>
+  </action>
+  <action name="actionDelete_Tags">
+   <property name="icon">
+    <iconset>
+     <normaloff>../../../../usr/share/htmleditor/resources/htmltags.png</normaloff>../../../../usr/share/htmleditor/resources/htmltags.png</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;Delete Tags</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+D</string>
+   </property>
+  </action>
+  <action name="actionWeb_Browser">
+   <property name="icon">
+    <iconset>
+     <normaloff>../../../../usr/share/htmleditor/resources/webbrowser.png</normaloff>../../../../usr/share/htmleditor/resources/webbrowser.png</iconset>
+   </property>
+   <property name="text">
+    <string>Web Browser</string>
+   </property>
+  </action>
+  <action name="actionHTML_To_Text">
+   <property name="icon">
+    <iconset>
+     <normaloff>../../../../usr/share/htmleditor/resources/texttohtml.png</normaloff>../../../../usr/share/htmleditor/resources/texttohtml.png</iconset>
+   </property>
+   <property name="text">
+    <string>HTML To Text</string>
+   </property>
+  </action>
+  <action name="actionPreferences">
+   <property name="icon">
+    <iconset>
+     <normaloff>../../../../usr/share/htmleditor/resources/configure.png</normaloff>../../../../usr/share/htmleditor/resources/configure.png</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;Preferences</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+P</string>
+   </property>
+  </action>
+  <action name="actionSave_All">
+   <property name="icon">
+    <iconset>
+     <normaloff>../../../../usr/share/htmleditor/resources/filesave.png</normaloff>../../../../usr/share/htmleditor/resources/filesave.png</iconset>
+   </property>
+   <property name="text">
+    <string>Save All</string>
+   </property>
+  </action>
+  <action name="actionHTML_and_CSS">
+   <property name="icon">
+    <iconset>
+     <normaloff>../../../../usr/share/htmleditor/resources/htmledit.png</normaloff>../../../../usr/share/htmleditor/resources/htmledit.png</iconset>
+   </property>
+   <property name="text">
+    <string>HTML and CSS</string>
+   </property>
+  </action>
+  <action name="actionSave_Preferences">
+   <property name="icon">
+    <iconset>
+     <normaloff>../../../../usr/share/htmleditor/resources/filesave.png</normaloff>../../../../usr/share/htmleditor/resources/filesave.png</iconset>
+   </property>
+   <property name="text">
+    <string>Save Preferences</string>
+   </property>
+  </action>
+  <action name="actionLoad_Preferences">
+   <property name="icon">
+    <iconset>
+     <normaloff>../../../../usr/share/htmleditor/resources/fileopen.png</normaloff>../../../../usr/share/htmleditor/resources/fileopen.png</iconset>
+   </property>
+   <property name="text">
+    <string>Load Preferences</string>
+   </property>
+  </action>
+  <action name="actionCloseCurrent">
+   <property name="icon">
+    <iconset>
+     <normaloff>../../../../usr/share/htmleditor/resources/fileclose.png</normaloff>../../../../usr/share/htmleditor/resources/fileclose.png</iconset>
+   </property>
+   <property name="text">
+    <string>Close Current</string>
+   </property>
+  </action>
+  <action name="actionNew_CSS">
+   <property name="icon">
+    <iconset>
+     <normaloff>../../../../usr/share/htmleditor/resources/filenew.png</normaloff>../../../../usr/share/htmleditor/resources/filenew.png</iconset>
+   </property>
+   <property name="text">
+    <string>New CSS</string>
+   </property>
+  </action>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
