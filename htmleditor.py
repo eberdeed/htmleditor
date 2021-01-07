@@ -132,8 +132,6 @@ class HTMLEditor(QMainWindow, Ui_HTMLEditor):
     csssize = 0
     # Add a save message flag.
     savemessage = True
-    # Document tab list.
-    tablist = list()
     # Document file list.
     filelist = list()
     # Current open document tabs menu.
@@ -152,6 +150,8 @@ class HTMLEditor(QMainWindow, Ui_HTMLEditor):
     proggeom = 'htmledit.geom'
     # The location of the HTML help data.
     helpfile = '/usr/share/htmleditor/resources/editorhelp.html'
+    # The replace all flag.
+    replaceall = False
     # The initial HTML document.
     htmltemplate = """<!DOCTYPE html>
 <html>
@@ -826,10 +826,6 @@ IMG     {
             tabindex = self.tabWidget.currentIndex()
             fname = self.tabWidget.tabToolTip(tabindex)
             stem, self.docext = os.path.splitext(fname)
-            for x in range(len(self.changed)):
-                print("Changed: Document, Value ", x, self.changed[x])
-            print("Current Document: ", tabindex, self.changed[tabindex])
-            print("File name and extension: ", fname, self.docext)
             if(self.docext.lower() == '.css'):
                 self.cssEdit = self.tabWidget.widget(tabindex)
                 self.cssdoc = self.cssEdit.text()
@@ -1069,28 +1065,30 @@ IMG     {
         if (self.window == 1):
             self.htmlEdit.SendScintilla(self.baseEdit.SCI_CLEARSELECTIONS)
             tmptext = self.htmlEdit.text()
-            if (forward):
-                index = tmptext.find(self.findstr, self.mainindex)
-            else:
-                index = tmptext.rfind(self.findstr, 0, self.mainindex)
-            if index >= 0:
+            if (self.findstr in tmptext):
+                if (forward):
+                    index = tmptext.find(self.findstr, self.mainindex)
+                else:
+                    index = tmptext.rfind(self.findstr, 0, self.mainindex)
                 self.mainindex = index
-                self.htmlEdit.SendScintilla(self.baseEdit.SCI_SETSELECTION, self.mainindex, self.mainindex + len(self.findstr))
-                lineno = self.htmlEdit.SendScintilla(self.baseEdit.SCI_GETCURLINE)
-                self.htmlEdit.SendScintilla(self.baseEdit.SCI_SCROLLCARET, lineno)
+                if (self.mainindex < len(tmptext)):
+                    self.htmlEdit.SendScintilla(self.baseEdit.SCI_SETSELECTION, self.mainindex, self.mainindex + len(self.findstr))
+                    lineno = self.htmlEdit.SendScintilla(self.baseEdit.SCI_GETCURLINE)
+                    self.htmlEdit.SendScintilla(self.baseEdit.SCI_SCROLLCARET, lineno)
             return
         elif (self.window == 2):
             self.cssEdit.SendScintilla(self.baseEdit.SCI_CLEARSELECTIONS)
             tmptext = self.cssEdit.text()
-            if (forward):
-                index = tmptext.find(self.findstr, self.mainindex)
-            else:
-                index = tmptext.rfind(self.findstr, 0, self.mainindex)
-            if index >= 0:
+            if (self.findstr in tmptext):
+                if (forward):
+                    index = tmptext.find(self.findstr, self.mainindex)
+                else:
+                    index = tmptext.rfind(self.findstr, 0, self.mainindex)
                 self.mainindex = index
-                self.cssEdit.SendScintilla(self.baseEdit.SCI_SETSELECTION, self.mainindex, self.mainindex + len(self.findstr))
-                lineno = self.cssEdit.SendScintilla(self.baseEdit.SCI_GETCURLINE)
-                self.cssEdit.SendScintilla(self.baseEdit.SCI_SCROLLCARET, lineno)
+                if (self.mainindex < len(tmptext)):
+                    self.cssEdit.SendScintilla(self.baseEdit.SCI_SETSELECTION, self.mainindex, self.mainindex + len(self.findstr))
+                    lineno = self.cssEdit.SendScintilla(self.baseEdit.SCI_GETCURLINE)
+                    self.cssEdit.SendScintilla(self.baseEdit.SCI_SCROLLCARET, lineno)
             return
 
             
@@ -1117,43 +1115,56 @@ IMG     {
             self.findPrevHTML()
         else:
             self.findNextHTML()
-        self.htmlEdit.replaceSelectedText(self.replacestr)
+        tmptext = self.htmlEdit.text()
+        if (self.findstr in tmptext):
+            self.htmlEdit.replaceSelectedText(self.replacestr)
         self.htmlEdit.SendScintilla(self.baseEdit.SCI_SETCURRENTPOS, self.mainindex)
         self.htmlEdit.SendScintilla(self.baseEdit.SCI_SETSELECTION, self.mainindex, self.mainindex + len(self.replacestr))
+        self.mainindex += len(self.replacestr)
         return
     
     def replaceAllHTML(self):
         """ Replace all instances of the find string
             in the HTML window.
         """
+        self.window = 1
         self.htmlEdit.SendScintilla(self.baseEdit.SCI_CLEARSELECTIONS)
         self.htmlEdit.SendScintilla(self.baseEdit.SCI_GOTOPOS, 0)
-        found = self.htmlEdit.findFirst(self.findstr, self.regex, True, False, True, True)
-        while(found):
-            self.htmlEdit.replace(self.replacestr)
-            found = self.htmlEdit.findFirst(self.findstr, self.regex, True, False, True, True)
-              
+        self.mainindex = 0
+        tmptext = self.htmlEdit.text()
+        self.replaceall = True
+        while(self.findstr in tmptext):
+            self.findNextHTML()
+            self.htmlEdit.replaceSelectedText(self.replacestr)
+            tmptext = self.htmlEdit.text()
+            self.mainindex = self.htmlEdit.SendScintilla(self.baseEdit.SCI_GETCURRENTPOS)
+        self.replaceall = False
+        
     def replaceAllCSS(self):
         """ Replace all instances of the find string in the
             CSS window.
         """
+        self.window = 2
         self.cssEdit.SendScintilla(self.baseEdit.SCI_CLEARSELECTIONS)
         self.cssEdit.SendScintilla(self.baseEdit.SCI_GOTOPOS, 0)
-        found = self.cssEdit.findFirst(self.findstr, self.regex, True, True, False, True)
-        while(found):
-            self.cssEdit.replace(self.replacestr)
-            found = self.cssEdit.findFirst(self.findstr, self.regex, True, True, False, True)
-        
-        
+        tmptext = self.cssEdit.text()
+        self.replaceall = True
+        self.mainindex = 0
+        while(self.findstr in tmptext):
+            self.findNextCSS()
+            self.cssEdit.replaceSelectedText(self.replacestr)
+            tmptext = self.cssEdit.text()
+            self.mainindex = self.cssEdit.SendScintilla(self.baseEdit.SCI_GETCURRENTPOS)
+            print(self.mainindex, self.replaceall)
+        self.replaceall = False
             
     def findNextHTML(self): 
         """ Find the next piece of text to replace in the HTML window.
         """
         self.htmlEdit.SendScintilla(self.baseEdit.SCI_CLEARSELECTIONS)
-        self.mainindex += len(self.findstr)
         tmptext = self.htmlEdit.text()
         index = tmptext.find(self.findstr, self.mainindex)
-        if (index < 0):
+        if (not self.findstr in tmptext) and (not self.replaceall):
             self.htmlEdit.SendScintilla(self.baseEdit.SCI_CLEARSELECTIONS)
             self.htmlEdit.SendScintilla(self.baseEdit.SCI_SETCURRENTPOS, 0)
             answer = QMessageBox.warning(self, "End of Document", \
@@ -1163,15 +1174,15 @@ IMG     {
             if answer == QMessageBox.Yes:
                 self.mainindex = 0
                 self.htmlEdit.SendScintilla(self.baseEdit.SCI_SETCURRENTPOS, 0)
-                index = tmptext.find(self.findstr, self.mainindex)
-                if (index < 0):
+                if (not self.findstr in tmptext):
                     self.htmlEdit.SendScintilla(self.baseEdit.SCI_SETCURRENTPOS, 0)
                     QMessageBox.warning(self, "Search Error", \
                         "There are no more instances" \
                         + " in the HTML document.", QMessageBox.Ok, \
                         QMessageBox.Ok)
-                self.markDoc(True)
-        else:
+                else:
+                    self.markDoc(True)
+        elif (self.findstr in tmptext):
             self.markDoc(True)
         return                
 
@@ -1181,7 +1192,7 @@ IMG     {
         tmptext = self.htmlEdit.text()
         self.htmlEdit.SendScintilla(self.baseEdit.SCI_CLEARSELECTIONS)
         index = tmptext.rfind(self.findstr, 0, self.mainindex)
-        if (index < 0):
+        if (not self.findstr in tmptext):
             self.htmlEdit.SendScintilla(self.baseEdit.SCI_SETCURRENTPOS, self.htmlEdit.length() - 1)
             self.htmlEdit.SendScintilla(self.baseEdit.SCI_CLEARSELECTIONS)
             answer = QMessageBox.warning(self, "End of Document", \
@@ -1192,14 +1203,14 @@ IMG     {
                 self.mainindex = self.htmlEdit.length() - 1
                 self.htmlEdit.SendScintilla(self.baseEdit.SCI_SETCURRENTPOS, self.mainindex)
                 self.htmlEdit.SendScintilla(self.baseEdit.SCI_CLEARSELECTIONS)
-                index = tmptext.rfind(self.findstr, 0, self.mainindex)
-                if (index < 0):
+                if (not self.findstr in tmptext):
                     QMessageBox.warning(self, "Search Error", \
                         "There are no more instances" \
                         + " in the HTML document.", QMessageBox.Ok, \
                         QMessageBox.Ok)
                     self.moredata = False
-                self.markDoc(False)
+                else:
+                    self.markDoc(False)
         else:
             self.markDoc(False)
         return                
@@ -1212,19 +1223,21 @@ IMG     {
             self.findPrevCSS()
         else:
             self.findNextCSS()
-        self.cssEdit.replaceSelectedText(self.replacestr)
+        tmptext = self.cssEdit.text()
+        if (self.findstr in tmptext):
+            self.cssEdit.replaceSelectedText(self.replacestr)
         self.cssEdit.SendScintilla(self.baseEdit.SCI_SETCURRENTPOS, self.mainindex)
         self.cssEdit.SendScintilla(self.baseEdit.SCI_SETSELECTION, self.mainindex, self.mainindex + len(self.replacestr))
+        self.mainindex += len(self.replacestr)
         return
         
     def findNextCSS(self):
         """ Find the next piece of text to replace in the CSS window.
         """
         self.cssEdit.SendScintilla(self.baseEdit.SCI_CLEARSELECTIONS)
-        self.mainindex += len(self.findstr)
         tmptext = self.cssEdit.text()
         index = tmptext.find(self.findstr, self.mainindex)
-        if (index < 0):
+        if (not self.findstr in tmptext) and (not self.replaceall):
             self.cssEdit.SendScintilla(self.baseEdit.SCI_CLEARSELECTIONS)
             self.cssEdit.SendScintilla(self.baseEdit.SCI_SETCURRENTPOS, 0)
             answer = QMessageBox.warning(self, "End of Document", \
@@ -1233,8 +1246,7 @@ IMG     {
                 QMessageBox.No)
             if answer == QMessageBox.Yes:
                 self.mainindex = 0
-                index = tmptext.find(self.findstr, self.mainindex)
-                if (index < 0):
+                if (not self.findstr in tmptext):
                     self.cssEdit.SendScintilla(self.baseEdit.SCI_CLEARSELECTIONS)
                     self.cssEdit.SendScintilla(self.baseEdit.SCI_SETCURRENTPOS, 0)
                     QMessageBox.warning(self, "Search Error", \
@@ -1242,8 +1254,9 @@ IMG     {
                         + self.findstr + " in the CSS document.", QMessageBox.Ok, \
                         QMessageBox.Ok)
                     self.moredata = False
-                self.markDoc(True)
-        else:
+                else:
+                    self.markDoc(True)
+        elif (self.findstr in tmptext):
             self.markDoc(True)
         return                
         
@@ -1253,7 +1266,7 @@ IMG     {
         tmptext = self.cssEdit.text()
         self.cssEdit.SendScintilla(self.baseEdit.SCI_CLEARSELECTIONS)
         index = tmptext.rfind(self.findstr, 0, self.mainindex)
-        if (index < 0):
+        if (not self.findstr in tmptext):
             self.cssEdit.SendScintilla(self.baseEdit.SCI_SETCURRENTPOS, self.cssEdit.length() - 1)
             self.cssEdit.SendScintilla(self.baseEdit.SCI_CLEARSELECTIONS)
             answer = QMessageBox.warning(self, "End of Document", \
@@ -1264,12 +1277,13 @@ IMG     {
                 self.mainindex = self.cssEdit.length() - 1
                 self.cssEdit.SendScintilla(self.baseEdit.SCI_SETCURRENTPOS, self.mainindex)
                 self.cssEdit.SendScintilla(self.baseEdit.SCI_CLEARSELECTIONS)
-                if not (self.cssEdit.findFirst(self.findstr, self.regex, True, False, True, False)):
+                if (not self.findstr in tmptext):
                     QMessageBox.warning(self, "Search Error", \
                         "There are no more instances of:  " \
                         + self.findstr + " in the CSS document.", QMessageBox.Ok, \
                         QMessageBox.Ok)
-                self.markDoc(False)
+                else:   
+                    self.markDoc(False)
         else:
             self.markDoc(False)
         return                
@@ -1609,6 +1623,7 @@ IMG     {
                 self.htmlfile = fname
                 self.htmlEdit.SendScintilla(self.baseEdit.SCI_SETCURRENTPOS, 0)
                 self.htmlEditor()
+            self.connectEditor()
         self.updateStatus()
         return
     
@@ -1633,6 +1648,21 @@ IMG     {
         actions = self.currentTabs.actions()
         index = actions.index(self.sender())
         self.setCurrentIndex(index)
+    
+    def connectEditor(self):
+        """ Connect the new editor.
+        """
+        # Connect the new.
+        self.htmlcut.triggered.connect(self.htmlEdit.cut)
+        self.csscut.triggered.connect(self.cssEdit.cut)
+        self.htmlcopy.triggered.connect(self.htmlEdit.copy)
+        self.csscopy.triggered.connect(self.cssEdit.copy)
+        self.htmlpaste.triggered.connect(self.htmlEdit.paste)
+        self.csspaste.triggered.connect(self.cssEdit.paste)
+        self.htmlredo.triggered.connect(self.htmlEdit.redo)
+        self.cssredo.triggered.connect(self.cssEdit.redo)
+        self.htmlundo.triggered.connect(self.htmlEdit.undo)
+        self.cssundo.triggered.connect(self.cssEdit.undo)
         
     def removeTab(self):
         """ Remove the current tab.
